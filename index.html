@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEWATA.NET - Premium Cinema Theater</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-theater: #06070a;
+            --bg-card: #121420;
+            --gold-primary: #dfb15b;
+            --gold-glow: rgba(223, 177, 91, 0.25);
+            --text-muted: #8e94a5;
+            --glass-bg: rgba(18, 20, 32, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.06);
+        }
+
+        body {
+            background-color: var(--bg-theater);
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-theater);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #25283a;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gold-primary);
+        }
+
+        /* Luxury Glassmorphism Navbar */
+        .navbar {
+            background: linear-gradient(to bottom, rgba(6, 7, 10, 0.95), transparent);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #fff 30%, var(--gold-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .navbar-brand span {
+            font-size: 1.8rem;
+            color: var(--gold-primary);
+            -webkit-text-fill-color: var(--gold-primary);
+        }
+        .nav-link {
+            color: #bdc2d1 !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem !important;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--gold-primary) !important;
+        }
+
+        /* THEATER THEME CONTAINER */
+        .cinema-theater-container {
+            max-width: 1240px;
+            margin: 110px auto 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Bioskop Screen Ambient Glow Effect */
+        .cinema-screen-wrapper {
+            position: relative;
+            background: #000;
+            border-radius: 20px;
+            padding: 8px;
+            border: 1px solid rgba(223, 177, 91, 0.15);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 
+                        0 0 50px rgba(223, 177, 91, 0.03);
+            margin-bottom: 30px;
+            transition: box-shadow 0.5s ease;
+        }
+
+        /* Video Frame 16:9 Cinema Aspect Ratio */
+        .cinema-frame {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 14px;
+        }
+        .cinema-frame iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background-color: #000;
+        }
+
+        /* Info Film yang sedang Diputar */
+        .now-playing-info {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2.2rem;
+            border-radius: 20px;
+            margin-bottom: 45px;
+            backdrop-filter: blur(15px);
+        }
+        .now-playing-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff 60%, #d5d9e5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .meta-info span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-right: 1.5rem;
+        }
+        .meta-info i {
+            color: var(--gold-primary);
+            margin-right: 0.4rem;
+        }
+
+        /* Theater Lights Control Button */
+        .btn-lights {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            color: #ffffff;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .btn-lights:hover, .btn-lights.active {
+            background: var(--gold-primary);
+            color: #0a0b10;
+            border-color: var(--gold-primary);
+            box-shadow: 0 4px 15px var(--gold-glow);
+        }
+
+        /* Genre Pill Navigation */
+        .genre-capsules {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 0 20px 2rem 20px;
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+        .genre-capsules::-webkit-scrollbar { display: none; }
+        .pill-item {
+            background: #16192b;
+            border: 1px solid var(--glass-border);
+            color: #a4a9b9;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .pill-item:hover, .pill-item.active {
+            background: var(--gold-primary);
+            color: #0a0b10;
+            border-color: var(--gold-primary);
+            font-weight: 600;
+        }
+
+        /* Content Sections */
+        .movie-selection-zone {
+            padding: 0 20px;
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+        .zone-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            position: relative;
+            padding-left: 15px;
+        }
+        .zone-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            height: 60%;
+            width: 4px;
+            background: var(--gold-primary);
+            border-radius: 2px;
+        }
+
+        .cinema-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        /* Premium Selectable Vertical Card */
+        .dewata-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            height: 360px;
+        }
+        .dewata-card-img-wrapper {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+        .dewata-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .card-blur-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, #0e101a 15%, rgba(14, 16, 26, 0) 100%);
+            opacity: 0.9;
+        }
+        .card-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(10, 11, 16, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--glass-border);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gold-primary);
+            z-index: 2;
+        }
+        .dewata-card .card-body {
+            padding: 14px;
+            background: #0e101a;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        .dewata-card .movie-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #ffffff;
+        }
+        .dewata-card .movie-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .dewata-card .movie-meta i {
+            color: #ffc107;
+        }
+
+        /* Hover & Playing States */
+        .dewata-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(223, 177, 91, 0.4);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 15px rgba(223, 177, 91, 0.1);
+        }
+        .dewata-card:hover img {
+            transform: scale(1.08);
+        }
+        .dewata-card.playing {
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 0 25px var(--gold-glow);
+        }
+        .dewata-card.playing .card-body {
+            background: linear-gradient(135deg, #16192b 0%, #0a0b10 100%);
+        }
+        .dewata-card.playing::after {
+            content: '\f04b  SEDANG DIPUTAR';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--gold-primary);
+            color: #0a0b10;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+            z-index: 3;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Lights Out Dimming System Architecture */
+        body.lights-out {
+            background-color: #020305;
+        }
+        body.lights-out .navbar, 
+        body.lights-out .now-playing-info,
+        body.lights-out .genre-capsules,
+        body.lights-out .movie-selection-zone,
+        body.lights-out footer {
+            opacity: 0.12;
+            pointer-events: none; /* Cegah interaksi di luar layar waktu lampu padam */
+        }
+        body.lights-out .cinema-screen-wrapper {
+            box-shadow: 0 0 120px rgba(223, 177, 91, 0.2);
+        }
+        body.lights-out .lights-control-panel {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        /* Mengembalikan transisi halus saat saklar lampu ditekan */
+        .navbar, .now-playing-info, .genre-capsules, .movie-selection-zone, footer {
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Premium Footer */
+        footer {
+            background: #040508;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            padding: 5rem 0 2rem 0;
+            margin-top: 5rem;
+        }
+        footer a {
+            color: #a4a9b9;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        footer a:hover {
+            color: var(--gold-primary);
+        }
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .footer-brand span {
+            color: var(--gold-primary);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">DEWATA<span>.NET</span></a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#dewataNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="dewataNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="#">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Film Eksklusif</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Serial Jagat</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Arsip Budaya</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Daftar Saya</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-4">
+                    <form class="d-none d-md-flex position-relative align-items-center">
+                        <input type="text" class="form-control bg-dark border-0 rounded-pill text-white ps-3 pe-5 py-2" placeholder="Cari mahakarya..." style="font-size: 0.85rem; width: 220px; background-color: #16192b !important;">
+                        <i class="fas fa-search position-absolute end-0 me-3 text-muted" style="cursor: pointer;"></i>
+                    </form>
+                    <div class="position-relative" style="cursor: pointer;">
+                        <i class="far fa-bell fs-5 text-white"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-info p-1"><span class="visually-hidden">Notif</span></span>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Profile" class="rounded-circle border border-2 border-warning" style="width: 38px; height: 38px; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="cinema-theater-container">
+        
+        <div class="lights-control-panel d-flex justify-content-between align-items-center mb-3">
+            <span class="text-white-50 small"><i class="fas fa-toggle-on text-warning me-1"></i> MODE BIOSKOP: Pilih poster di bawah layar untuk memutar video URL internal.</span>
+            <button class="btn btn-lights btn-sm rounded-pill px-4 py-2" id="toggleLights">
+                <i class="fas fa-lightbulb me-2"></i> Padamkan Lampu
+            </button>
+        </div>
+
+        <div class="cinema-screen-wrapper">
+            <div class="cinema-frame">
+                <iframe id="main-player" 
+                        src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0&modestbranding=1" 
+                        allowfullscreen 
+                        allow="autoplay; encrypted-media">
+                </iframe>
+            </div>
+        </div>
+
+        <div class="now-playing-info">
+            <span class="badge bg-warning text-dark mb-3 fw-bold px-3 py-1" id="player-tag">DEWATA EXCLUSIVE</span>
+            <h1 class="now-playing-title" id="player-title">Kala Di Pesisir Sanur</h1>
+            
+            <div class="meta-info mb-3" id="player-meta">
+                <span><i class="fas fa-star"></i> 4.9 / 5</span>
+                <span><i class="far fa-calendar-alt"></i> 2026</span>
+                <span><i class="far fa-clock"></i> 2 Jam 15 Menit</span>
+                <span class="badge bg-secondary bg-opacity-25 text-white border border-secondary px-2">16+</span>
+            </div>
+            
+            <p class="text-white-50 fs-6 mb-0 lh-lg" id="player-description" style="max-width: 850px;">
+                Sebuah drama sinematik puitis tentang garis takdir dua jiwa yang dipertemukan di bawah sang fajar Sanur. Menghadirkan benturan tradisi kuno, ambisi modernitas, serta rahasia samudra yang mendalam.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="genre-capsules">
+        <div class="pill-item active">Semua Sinema</div>
+        <div class="pill-item">Mahakarya Lokal</div>
+        <div class="pill-item">Aksi Kontemporer</div>
+        <div class="pill-item">Misteri & Kebatinan</div>
+        <div class="pill-item">Romansa Puitis</div>
+        <div class="pill-item">Dokumenter Nusantara</div>
+    </div>
+
+    <div class="movie-selection-zone">
+        <h2 class="zone-title">Silahkan Pilih Jadwal Putar Film</h2>
+        
+        <div class="cinema-grid">
+            
+            <div class="dewata-card playing" 
+                 data-video-url="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                 data-title="Kala Di Pesisir Sanur"
+                 data-tag="DEWATA EXCLUSIVE"
+                 data-rating="4.9 / 5"
+                 data-year="2026"
+                 data-duration="2 Jam 15 Menit"
+                 data-desc="Sebuah drama sinematik puitis tentang garis takdir dua jiwa yang dipertemukan di bawah sang fajar Sanur. Menghadirkan benturan tradisi kuno, ambisi modernitas, serta rahasia samudra yang mendalam.">
+                <span class="card-badge">Hot</span>
+                <div class="dewata-card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80" alt="Sinema Poster">
+                    <div class="card-blur-overlay"></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="movie-title">Kala Di Pesisir Sanur</h3>
+                    <div class="movie-meta">
+                        <span><i class="fas fa-star"></i> 4.9</span>
+                        <span>Drama</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dewata-card" 
+                 data-video-url="https://www.youtube.com/embed/ScMzIvxBSi4"
+                 data-title="Metropolis Cyber 2026"
+                 data-tag="PREMIUM SCI-FI"
+                 data-rating="4.8 / 5"
+                 data-year="2026"
+                 data-duration="1 Jam 58 Menit"
+                 data-desc="Penjelajahan distopia sebuah kota megapolitan neo-asia di mana manusia beradu eksistensi dengan kecerdasan buatan super masif tingkat tinggi dalam perebutan sumber daya energi terbarukan terakhir.">
+                <span class="card-badge">Baru</span>
+                <div class="dewata-card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1574267432553-4b4628081c31?w=400&q=80" alt="Sinema Poster">
+                    <div class="card-blur-overlay"></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="movie-title">Metropolis Cyber 2026</h3>
+                    <div class="movie-meta">
+                        <span><i class="fas fa-star"></i> 4.8</span>
+                        <span>Sci-Fi</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dewata-card" 
+                 data-video-url="https://player.vimeo.com/video/318385012"
+                 data-title="Ritus Tanah Agung"
+                 data-tag="BUDAYA DOKUMENTER"
+                 data-rating="5.0 / 5"
+                 data-year="2025"
+                 data-duration="1 Jam 40 Menit"
+                 data-desc="Rekaman upacara sakral dan mistis tersembunyi jauh di pedalaman pegunungan nusantara yang belum pernah terekspos kamera dunia luar, memotret hubungan magis manusia dan bumi purba.">
+                <span class="card-badge">Pilihan Juri</span>
+                <div class="dewata-card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1528127269322-539801943592?w=400&q=80" alt="Sinema Poster">
+                    <div class="card-blur-overlay"></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="movie-title">Ritus Tanah Agung</h3>
+                    <div class="movie-meta">
+                        <span><i class="fas fa-star"></i> 5.0</span>
+                        <span>Budaya</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dewata-card" 
+                 data-video-url="https://www.youtube.com/embed/ScMzIvxBSi4" 
+                 data-title="Labirin Ilusi Jiwa"
+                 data-tag="THRILLER MISTERI"
+                 data-rating="4.7 / 5"
+                 data-year="2026"
+                 data-duration="2 Jam 05 Menit"
+                 data-desc="Seorang psikolog kawakan terjebak dalam memori alam bawah sadar pasien amnesianya sendiri, mencoba memecahkan teka-teki pembunuhan berantai berkedok ritual supranatural fiktif.">
+                <div class="dewata-card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1509281373149-e957c6296406?w=400&q=80" alt="Sinema Poster">
+                    <div class="card-blur-overlay"></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="movie-title">Labirin Ilusi Jiwa</h3>
+                    <div class="movie-meta">
+                        <span><i class="fas fa-star"></i> 4.7</span>
+                        <span>Thriller</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dewata-card" 
+                 data-video-url="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                 data-title="Lentera Penjaga Malam"
+                 data-tag="MAHAKARYA LOKAL"
+                 data-rating="4.6 / 5"
+                 data-year="2024"
+                 data-duration="1 Jam 52 Menit"
+                 data-desc="Kisah mengharukan tentang seorang kakek penjaga mercusuar tua di pulau terluar Indonesia yang berjuang mempertahankan suar lampunya tetap menyala demi menuntun kapal nelayan tradisional pulang menerjang badai.">
+                <div class="dewata-card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&q=80" alt="Sinema Poster">
+                    <div class="card-blur-overlay"></div>
+                </div>
+                <div class="card-body">
+                    <h3 class="movie-title">Lentera Penjaga Malam</h3>
+                    <div class="movie-meta">
+                        <span><i class="fas fa-star"></i> 4.6</span>
+                        <span>Drama</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-4 col-md-12">
+                    <div class="footer-brand">DEWATA<span>.NET</span></div>
+                    <p class="pe-lg-5 text-white-50">
+                        Sistem antarmuka pemutar sinema terintegrasi. Bertindak sebagai perantara pemutaran URL video eksternal dengan kenyamanan arsitektur UI Bioskop Virtual premium.
+                    </p>
+                    <div class="d-flex gap-3 fs-5 mt-4">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h6 class="text-white fw-bold mb-3">Kategori</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2">
+                        <li><a href="#">Film Premium</a></li>
+                        <li><a href="#">Serial Orisinal</a></li>
+                        <li><a href="#">Arsip Budaya</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h6 class="text-white fw-bold mb-3">Integrasi</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2">
+                        <li><a href="#">Unggah Link URL</a></li>
+                        <li><a href="#">Panduan Embed</a></li>
+                        <li><a href="#">API Gateway</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <h6 class="text-white fw-bold mb-3">Sistem Perantara</h6>
+                    <p class="text-white-50 small">
+                        Pastikan link URL video yang diunggah mendukung protokol penayangan iframe/embed (X-Frame-Options ALLOW) agar dapat dirender dengan mulus oleh sistem pemutar DEWATA.NET.
+                    </p>
+                </div>
+            </div>
+            <div class="border-top border-secondary border-opacity-25 pt-4 mt-5 text-center">
+                <p class="mb-0 text-white-50">&copy; 2026 DEWATA.NET - Premium Virtual Cinema System. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // 1. Logika Inti Perantara Penukaran URL Embed Video dan Metadata
+        const cards = document.querySelectorAll('.dewata-card');
+        const mainPlayer = document.getElementById('main-player');
+        const playerTitle = document.getElementById('player-title');
+        const playerTag = document.getElementById('player-tag');
+        const playerDesc = document.getElementById('player-description');
+        const playerMeta = document.getElementById('player-meta');
+
+        cards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Bersihkan penanda active 'playing' di semua card poster
+                cards.forEach(c => c.classList.remove('playing'));
+                
+                // Berikan tanda active pada card poster yang ditekan
+                this.classList.add('playing');
+                
+                // Ekstraksi data atribut dari card
+                const videoUrl = this.getAttribute('data-video-url');
+                const title = this.getAttribute('data-title');
+                const tag = this.getAttribute('data-tag');
+                const desc = this.getAttribute('data-desc');
+                const rating = this.getAttribute('data-rating');
+                const year = this.getAttribute('data-year');
+                const duration = this.getAttribute('data-duration');
+
+                // Proses Injeksi URL baru ke dalam iframe player dengan konfigurasi autoplay otomatis
+                mainPlayer.setAttribute('src', videoUrl + "?autoplay=1&rel=0&modestbranding=1");
+                
+                // Perbarui Konten Teks Informasi Sesuai Film yang Dipilih
+                playerTitle.textContent = title;
+                playerTag.textContent = tag;
+                playerDesc.textContent = desc;
+                
+                // Susun ulang struktur teks HTML meta-info
+                playerMeta.innerHTML = `
+                    <span><i class="fas fa-star"></i> ${rating}</span>
+                    <span><i class="far fa-calendar-alt"></i> ${year}</span>
+                    <span><i class="far fa-clock"></i> ${duration}</span>
+                    <span class="badge bg-secondary bg-opacity-25 text-white border border-secondary px-2">16+</span>
+                `;
+
+                // Transisi gulir layar ke atas menuju layar bioskop secara halus
+                window.scrollTo({ top: 40, behavior: 'smooth' });
+            });
+        });
+
+        // 2. Logika Saklar Saklar Lampu Bioskop Virtual (Lights Out Dimming)
+        const toggleLightsBtn = document.getElementById('toggleLights');
+        toggleLightsBtn.addEventListener('click', function() {
+            document.body.classList.toggle('lights-out');
+            
+            if (document.body.classList.contains('lights-out')) {
+                this.innerHTML = '<i class="fas fa-lightbulb me-2"></i> Nyalakan Lampu';
+                this.classList.add('active');
+            } else {
+                this.innerHTML = '<i class="fas fa-lightbulb me-2"></i> Padamkan Lampu';
+                this.classList.remove('active');
+            }
+        });
+
+        // 3. Logika Filter Kapsul Kategori
+        const pills = document.querySelectorAll('.pill-item');
+        pills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                pills.forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
