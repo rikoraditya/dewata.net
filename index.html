@@ -383,6 +383,57 @@
         .footer-brand span {
             color: var(--gold-primary);
         }
+
+        .slider-wrapper{
+position:relative;
+}
+
+.cinema-grid{
+display:flex;
+gap:25px;
+overflow-x:auto;
+scroll-behavior:smooth;
+padding:10px 5px 20px;
+scrollbar-width:none;
+}
+
+.cinema-grid::-webkit-scrollbar{
+display:none;
+}
+
+.dewata-card{
+flex:0 0 220px;
+}
+
+.slider-btn{
+position:absolute;
+top:45%;
+transform:translateY(-50%);
+width:50px;
+height:50px;
+border:none;
+border-radius:50%;
+z-index:99;
+
+background:rgba(0,0,0,.8);
+color:#fff;
+
+transition:.3s;
+}
+
+.slider-btn:hover{
+background:var(--gold-primary);
+color:#000;
+}
+
+.prev{
+left:-20px;
+}
+
+.next{
+right:-20px;
+}
+
     </style>
 </head>
 <body>
@@ -465,7 +516,10 @@
     <div class="movie-selection-zone">
         <h2 class="zone-title">Silahkan Pilih Jadwal Putar Film</h2>
         
-        <div class="cinema-grid">
+        <div class="slider-wrapper"> 
+            <button class="slider-btn prev" id="prevBtn"> <i class="fas fa-chevron-left"></i> 
+            </button> 
+            <div class="cinema-grid" id="movieSlider">
             
             <div class="dewata-card playing" 
                  data-video-url="https://www.youtube.com/embed/F5dKs7nw0dI?si=UNDLrAc8tK5vRnrR"
@@ -581,6 +635,10 @@
             </div>
 
         </div>
+
+        <button class="slider-btn next" id="nextBtn"> <i class="fas fa-chevron-right"></i> </button>
+
+    </div>
     </div>
 
     <footer>
@@ -793,6 +851,29 @@
         card.style.transition =
             'opacity .25s ease, transform .25s ease';
     });
+
+    const movieSlider = document.getElementById('movieSlider');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+
+if(movieSlider){
+
+nextBtn.addEventListener('click', () => {
+    movieSlider.scrollBy({
+        left: 800,
+        behavior: 'smooth'
+    });
+});
+
+prevBtn.addEventListener('click', () => {
+    movieSlider.scrollBy({
+        left: -800,
+        behavior: 'smooth'
+    });
+});
+
+}
+
 </script>
 </body>
 </html>
