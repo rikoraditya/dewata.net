@@ -455,11 +455,11 @@
 
     <div class="genre-capsules">
         <div class="pill-item active">Semua Sinema</div>
-        <div class="pill-item">Mahakarya Lokal</div>
-        <div class="pill-item">Aksi Kontemporer</div>
-        <div class="pill-item">Misteri & Kebatinan</div>
-        <div class="pill-item">Romansa Puitis</div>
-        <div class="pill-item">Dokumenter Nusantara</div>
+        <div class="pill-item">Horror</div>
+        <div class="pill-item">Romantis</div>
+        <div class="pill-item">Action</div>
+        <div class="pill-item">Drama</div>
+        <div class="pill-item">Adventure</div>
     </div>
 
     <div class="movie-selection-zone">
@@ -468,8 +468,9 @@
         <div class="cinema-grid">
             
             <div class="dewata-card playing" 
-                 data-video-url="https://drive.google.com/file/d/1MYJDhQ130oQJj8vy4kW-qVsUrVAvJRRr/preview"
+                 data-video-url="https://www.youtube.com/embed/F5dKs7nw0dI?si=UNDLrAc8tK5vRnrR"
                  data-title="Sandhikala - QU Production 2019"
+                 data-genre="Horror"
                  data-tag="DEWATA EXCLUSIVE"
                  data-rating="4.9 / 5"
                  data-year="2026"
@@ -484,7 +485,7 @@
                     <h3 class="movie-title">Sandhikala - QU Production 2019</h3>
                     <div class="movie-meta">
                         <span><i class="fas fa-star"></i> 4.9</span>
-                        <span>Drama</span>
+                        <span>Horror</span>
                     </div>
                 </div>
             </div>
@@ -492,6 +493,7 @@
             <div class="dewata-card" 
                  data-video-url="https://www.youtube.com/embed/pEAAkT-a8P0?si=OsBiAIQKGEqG3C8G"
                  data-title="Sadhako Vs Kayako 2022"
+                data-genre="Horror"
                  data-tag="PREMIUM SCI-FI"
                  data-rating="4.8 / 5"
                  data-year="2026"
@@ -515,6 +517,7 @@
                  data-video-url="https://www.youtube.com/embed/f-Vr-FTMZt0?si=XGDQ3sDYpKQxcRfL"
                  data-title="Danur 1 Full Movie"
                  data-tag="BUDAYA DOKUMENTER"
+                  data-genre="Horror"
                  data-rating="5.0 / 5"
                  data-year="2025"
                  data-duration="1 Jam 40 Menit"
@@ -528,7 +531,7 @@
                     <h3 class="movie-title">Danur 1 Full Movie</h3>
                     <div class="movie-meta">
                         <span><i class="fas fa-star"></i> 5.0</span>
-                        <span>Budaya</span>
+                        <span>Horror</span>
                     </div>
                 </div>
             </div>
@@ -536,6 +539,7 @@
             <div class="dewata-card" 
                  data-video-url="https://www.youtube.com/embed/9onomqeB3v0?si=LIiRKKL0AIWZ2Ulh" 
                  data-title="Haunt Psycopat"
+                  data-genre="Horror"
                  data-tag="THRILLER MISTERI"
                  data-rating="4.7 / 5"
                  data-year="2026"
@@ -549,7 +553,7 @@
                     <h3 class="movie-title">Haunt Psycopat</h3>
                     <div class="movie-meta">
                         <span><i class="fas fa-star"></i> 4.7</span>
-                        <span>Thriller</span>
+                        <span>Horror</span>
                     </div>
                 </div>
             </div>
@@ -558,6 +562,7 @@
                  data-video-url="https://www.youtube.com/embed/O0OTAVfL9B0?si=vWrZ4McmM8N0kZqs" 
                  data-title="Hereford"
                  data-tag="MAHAKARYA LOKAL"
+                  data-genre="Horror"
                  data-rating="4.6 / 5"
                  data-year="2024"
                  data-duration="1 Jam 52 Menit"
@@ -570,7 +575,7 @@
                     <h3 class="movie-title">Hereford</h3>
                     <div class="movie-meta">
                         <span><i class="fas fa-star"></i> 4.6</span>
-                        <span>Drama</span>
+                        <span>Horror</span>
                     </div>
                 </div>
             </div>
@@ -624,74 +629,170 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // 1. Logika Inti Perantara Penukaran URL Embed Video dan Metadata
-        const cards = document.querySelectorAll('.dewata-card');
-        const mainPlayer = document.getElementById('main-player');
-        const playerTitle = document.getElementById('player-title');
-        const playerTag = document.getElementById('player-tag');
-        const playerDesc = document.getElementById('player-description');
-        const playerMeta = document.getElementById('player-meta');
+    // ==========================================
+    // PLAYER MOVIE
+    // ==========================================
+    const cards = document.querySelectorAll('.dewata-card');
+    const mainPlayer = document.getElementById('main-player');
+    const playerTitle = document.getElementById('player-title');
+    const playerTag = document.getElementById('player-tag');
+    const playerDesc = document.getElementById('player-description');
+    const playerMeta = document.getElementById('player-meta');
 
-        cards.forEach(card => {
-            card.addEventListener('click', function() {
-                // Bersihkan penanda active 'playing' di semua card poster
-                cards.forEach(c => c.classList.remove('playing'));
-                
-                // Berikan tanda active pada card poster yang ditekan
-                this.classList.add('playing');
-                
-                // Ekstraksi data atribut dari card
-                const videoUrl = this.getAttribute('data-video-url');
-                const title = this.getAttribute('data-title');
-                const tag = this.getAttribute('data-tag');
-                const desc = this.getAttribute('data-desc');
-                const rating = this.getAttribute('data-rating');
-                const year = this.getAttribute('data-year');
-                const duration = this.getAttribute('data-duration');
+    cards.forEach(card => {
+        card.addEventListener('click', function() {
 
-                // Proses Injeksi URL baru ke dalam iframe player dengan konfigurasi autoplay otomatis
-                mainPlayer.setAttribute('src', videoUrl + "?autoplay=1&rel=0&modestbranding=1");
-                
-                // Perbarui Konten Teks Informasi Sesuai Film yang Dipilih
-                playerTitle.textContent = title;
-                playerTag.textContent = tag;
-                playerDesc.textContent = desc;
-                
-                // Susun ulang struktur teks HTML meta-info
-                playerMeta.innerHTML = `
-                    <span><i class="fas fa-star"></i> ${rating}</span>
-                    <span><i class="far fa-calendar-alt"></i> ${year}</span>
-                    <span><i class="far fa-clock"></i> ${duration}</span>
-                    <span class="badge bg-secondary bg-opacity-25 text-white border border-secondary px-2">16+</span>
-                `;
+            // Hapus status playing dari semua card
+            cards.forEach(c => c.classList.remove('playing'));
 
-                // Transisi gulir layar ke atas menuju layar bioskop secara halus
-                window.scrollTo({ top: 40, behavior: 'smooth' });
-            });
-        });
+            // Tambahkan status playing ke card aktif
+            this.classList.add('playing');
 
-        // 2. Logika Saklar Saklar Lampu Bioskop Virtual (Lights Out Dimming)
-        const toggleLightsBtn = document.getElementById('toggleLights');
-        toggleLightsBtn.addEventListener('click', function() {
-            document.body.classList.toggle('lights-out');
-            
-            if (document.body.classList.contains('lights-out')) {
-                this.innerHTML = '<i class="fas fa-lightbulb me-2"></i> Nyalakan Lampu';
-                this.classList.add('active');
-            } else {
-                this.innerHTML = '<i class="fas fa-lightbulb me-2"></i> Padamkan Lampu';
-                this.classList.remove('active');
+            // Ambil data card
+            const videoUrl = this.dataset.videoUrl;
+            const title = this.dataset.title;
+            const tag = this.dataset.tag;
+            const desc = this.dataset.desc;
+            const rating = this.dataset.rating;
+            const year = this.dataset.year;
+            const duration = this.dataset.duration;
+
+            // Update player
+            let finalUrl = videoUrl;
+
+            if (videoUrl.includes('youtube.com/embed')) {
+                finalUrl += (
+                    videoUrl.includes('?')
+                        ? '&'
+                        : '?'
+                ) + 'autoplay=1&rel=0&modestbranding=1';
             }
-        });
 
-        // 3. Logika Filter Kapsul Kategori
-        const pills = document.querySelectorAll('.pill-item');
-        pills.forEach(pill => {
-            pill.addEventListener('click', () => {
-                pills.forEach(p => p.classList.remove('active'));
-                pill.classList.add('active');
+            mainPlayer.src = finalUrl;
+
+            // Update informasi film
+            playerTitle.textContent = title;
+            playerTag.textContent = tag;
+            playerDesc.textContent = desc;
+
+            playerMeta.innerHTML = `
+                <span>
+                    <i class="fas fa-star"></i> ${rating}
+                </span>
+
+                <span>
+                    <i class="far fa-calendar-alt"></i> ${year}
+                </span>
+
+                <span>
+                    <i class="far fa-clock"></i> ${duration}
+                </span>
+
+                <span class="badge bg-secondary bg-opacity-25 text-white border border-secondary px-2">
+                    16+
+                </span>
+            `;
+
+            // Scroll ke player
+            window.scrollTo({
+                top: 40,
+                behavior: 'smooth'
             });
         });
-    </script>
+    });
+
+    // ==========================================
+    // LIGHTS OUT MODE
+    // ==========================================
+    const toggleLightsBtn =
+        document.getElementById('toggleLights');
+
+    toggleLightsBtn.addEventListener('click', function() {
+
+        document.body.classList.toggle('lights-out');
+
+        if (document.body.classList.contains('lights-out')) {
+
+            this.innerHTML =
+                '<i class="fas fa-lightbulb me-2"></i> Nyalakan Lampu';
+
+            this.classList.add('active');
+
+        } else {
+
+            this.innerHTML =
+                '<i class="fas fa-lightbulb me-2"></i> Padamkan Lampu';
+
+            this.classList.remove('active');
+        }
+    });
+
+    // ==========================================
+    // FILTER GENRE
+    // ==========================================
+    const pills =
+        document.querySelectorAll('.pill-item');
+
+    const movieCards =
+        document.querySelectorAll('.dewata-card');
+
+    pills.forEach(pill => {
+
+        pill.addEventListener('click', function() {
+
+            // Active capsule
+            pills.forEach(p =>
+                p.classList.remove('active')
+            );
+
+            this.classList.add('active');
+
+            const selectedGenre =
+                this.textContent.trim().toLowerCase();
+
+            movieCards.forEach(card => {
+
+                const cardGenre =
+                    (card.dataset.genre || '')
+                    .toLowerCase();
+
+                if (
+                    selectedGenre === 'semua sinema' ||
+                    cardGenre.includes(selectedGenre)
+                ) {
+
+                    card.style.display = 'block';
+
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'scale(1)';
+                    }, 10);
+
+                } else {
+
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.9)';
+
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 250);
+                }
+
+            });
+
+        });
+
+    });
+
+    // ==========================================
+    // INISIALISASI ANIMASI CARD
+    // ==========================================
+    movieCards.forEach(card => {
+        card.style.opacity = '1';
+        card.style.transform = 'scale(1)';
+        card.style.transition =
+            'opacity .25s ease, transform .25s ease';
+    });
+</script>
 </body>
 </html>
