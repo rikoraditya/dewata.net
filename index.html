@@ -12,14 +12,14 @@
     
     <style>
 
-#moviePlayer.portrait-mode{
+#moviePlayer.portrait-video{
     position:absolute;
     top:50%;
     left:50%;
     width:320vh;
     height:180vh;
-    transform:translate(-50%,-50%);
-    border:none;
+    transform:translate(-50%, -50%);
+    border:0;
 }
 
         :root {
@@ -955,22 +955,17 @@ prevBtn.addEventListener('click', () => {
 }
 
 const iframe = document.getElementById("moviePlayer");
+const videoUrl = card.dataset.videoUrl;
 
-document.querySelectorAll(".dewata-card").forEach(card => {
-    card.addEventListener("click", () => {
+iframe.src = videoUrl;
 
-        iframe.src = card.dataset.videoUrl;
+// Hapus class sebelumnya
+iframe.classList.remove("portrait-video");
 
-        // Hapus mode portrait
-        iframe.classList.remove("portrait-mode");
-
-        // Jika video ini, aktifkan mode portrait
-        if(card.classList.contains("portrait-video")){
-            iframe.classList.add("portrait-mode");
-        }
-
-    });
-});
+// Hanya video ini yang dibuat portrait
+if (videoUrl.includes("nG-ZAjSjjDE")) {
+    iframe.classList.add("portrait-video");
+}
 
 </script>
 </body>
