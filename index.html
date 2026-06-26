@@ -12,16 +12,6 @@
     
     <style>
 
-#moviePlayer.portrait-video{
-    position:absolute;
-    top:50%;
-    left:50%;
-    width:320vh;
-    height:180vh;
-    transform:translate(-50%, -50%);
-    border:0;
-}
-
         :root {
             --bg-theater: #06070a;
             --bg-card: #121420;
@@ -110,45 +100,105 @@
             transition: box-shadow 0.5s ease;
         }
 
- /* NORMAL */
+/* ===============================
+   CINEMA PLAYER
+================================ */
+
 .cinema-frame{
     position:relative;
     width:100%;
     aspect-ratio:16/9;
     overflow:hidden;
-    border-radius:15px;
+    border-radius:18px;
     background:#000;
-    transition:.4s;
+    transition:.4s ease;
 }
 
-.cinema-frame iframe{
+#main-player{
     position:absolute;
     inset:0;
     width:100%;
     height:100%;
-    border:0;
-    transition:.4s;
+    border:none;
 }
 
-/* HANYA JIKA PORTRAIT */
+
+/* ===================================
+   MODE PORTRAIT (HANYA JIKA DITAMBAH CLASS)
+=================================== */
+
 .cinema-screen-wrapper.portrait{
+
     width:430px;
-    margin:auto;
+    max-width:100%;
+    margin:0 auto;
+
 }
 
 .cinema-screen-wrapper.portrait .cinema-frame{
+
     aspect-ratio:9/16;
-    width:430px;
+    width:100%;
     height:auto;
+
 }
 
-/* Zoom video landscape */
-.cinema-screen-wrapper.portrait iframe{
-    width:320%;
-    height:100%;
-    left:50%;
+.cinema-screen-wrapper.portrait #main-player{
+    position:absolute;
     top:50%;
+    left:50%;
+
+    width:177.78%;
+    height:100%;
+
     transform:translate(-50%,-50%);
+    border:0;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media(max-width:992px){
+
+.cinema-screen-wrapper.portrait{
+
+    width:360px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.cinema-screen-wrapper.portrait{
+
+    width:320px;
+
+}
+
+}
+
+@media(max-width:576px){
+
+.cinema-screen-wrapper{
+
+    border-radius:12px;
+
+}
+
+.cinema-frame{
+
+    border-radius:12px;
+
+}
+
+.cinema-screen-wrapper.portrait{
+
+    width:95%;
+
+}
+
 }
 
         /* Info Film yang sedang Diputar */
@@ -623,7 +673,7 @@ right:-20px;
                 </div>
             </div>
 
-            <div class="dewata-card potrait-video" 
+            <div class="dewata-card portrait-video" 
                  data-video-url="https://www.youtube.com/embed/nG-ZAjSjjDE?autoplay=1&controls=0&rel=0&playsinline=1&loop=1&playlist=nG-ZAjSjjDE"
                  data-title="Suami Kurir istri CEO"
                  data-genre="Drama"
