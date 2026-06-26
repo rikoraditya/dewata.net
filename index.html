@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+
+#moviePlayer.portrait-mode{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:320vh;
+    height:180vh;
+    transform:translate(-50%,-50%);
+    border:none;
+}
+
         :root {
             --bg-theater: #06070a;
             --bg-card: #121420;
@@ -590,8 +601,8 @@ right:-20px;
                 </div>
             </div>
 
-            <div class="dewata-card" 
-                 data-video-url="https://www.youtube.com/embed/nG-ZAjSjjDE?si=J-Xrm27Vc51fq0NX"
+            <div class="dewata-card potrait-video" 
+                 data-video-url="https://www.youtube.com/embed/nG-ZAjSjjDE?autoplay=1&controls=0&rel=0&playsinline=1&loop=1&playlist=nG-ZAjSjjDE"
                  data-title="Suami Kurir istri CEO"
                  data-genre="Drama"
                  data-tag="DEWATA EXCLUSIVE"
@@ -942,6 +953,24 @@ prevBtn.addEventListener('click', () => {
 });
 
 }
+
+const iframe = document.getElementById("moviePlayer");
+
+document.querySelectorAll(".dewata-card").forEach(card => {
+    card.addEventListener("click", () => {
+
+        iframe.src = card.dataset.videoUrl;
+
+        // Hapus mode portrait
+        iframe.classList.remove("portrait-mode");
+
+        // Jika video ini, aktifkan mode portrait
+        if(card.classList.contains("portrait-video")){
+            iframe.classList.add("portrait-mode");
+        }
+
+    });
+});
 
 </script>
 </body>
