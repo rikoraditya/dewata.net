@@ -110,21 +110,15 @@
             transition: box-shadow 0.5s ease;
         }
 
-   .cinema-frame{
+ /* NORMAL */
+.cinema-frame{
     position:relative;
     width:100%;
-    height:700px;
+    aspect-ratio:16/9;
     overflow:hidden;
-    border-radius:18px;
+    border-radius:15px;
     background:#000;
     transition:.4s;
-}
-/* Mode portrait */
-.cinema-frame.portrait{
-    width:420px;
-    height:90vh;
-    padding-bottom:0;
-    margin:auto;
 }
 
 .cinema-frame iframe{
@@ -133,51 +127,28 @@
     width:100%;
     height:100%;
     border:0;
-    transition:.5s;
+    transition:.4s;
 }
 
-/* Zoom video saat portrait */
-.cinema-frame.portrait iframe{
-    top:50%;
-    left:50%;
-    width:320%;
-    height:100%;
-    transform:translate(-50%,-50%);
-}
-
-/* PLAYER PORTRAIT */
-
+/* HANYA JIKA PORTRAIT */
 .cinema-screen-wrapper.portrait{
-
     width:430px;
-    max-width:100%;
     margin:auto;
-
 }
 
 .cinema-screen-wrapper.portrait .cinema-frame{
-
+    aspect-ratio:9/16;
     width:430px;
-    height:780px;
-
+    height:auto;
 }
 
-/* Zoom video */
-
+/* Zoom video landscape */
 .cinema-screen-wrapper.portrait iframe{
-
-    position:absolute;
-
-    top:50%;
-    left:50%;
-
-    width:350%;
+    width:320%;
     height:100%;
-
+    left:50%;
+    top:50%;
     transform:translate(-50%,-50%);
-
-    border:none;
-
 }
 
         /* Info Film yang sedang Diputar */
@@ -859,11 +830,13 @@ right:-20px;
 
             mainPlayer.src = finalUrl;
 
-      const wrapper=document.querySelector(".cinema-screen-wrapper");
+     const wrapper = document.querySelector(".cinema-screen-wrapper");
 
+// kembalikan ke mode biasa
 wrapper.classList.remove("portrait");
 
-if(this.classList.contains("potrait-video")){
+// hanya card ini yang portrait
+if(this.classList.contains("portrait-video")){
     wrapper.classList.add("portrait");
 }
 
@@ -1011,19 +984,6 @@ prevBtn.addEventListener('click', () => {
     });
 });
 
-}
-
-const iframe = document.getElementById("moviePlayer");
-const videoUrl = card.dataset.videoUrl;
-
-iframe.src = videoUrl;
-
-// Hapus class sebelumnya
-iframe.classList.remove("portrait-video");
-
-// Hanya video ini yang dibuat portrait
-if (videoUrl.includes("nG-ZAjSjjDE")) {
-    iframe.classList.add("portrait-video");
 }
 
 </script>
