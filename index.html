@@ -110,24 +110,41 @@
             transition: box-shadow 0.5s ease;
         }
 
-        /* Video Frame 16:9 Cinema Aspect Ratio */
-        .cinema-frame {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
-            overflow: hidden;
-            border-radius: 14px;
-        }
-        .cinema-frame iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-            background-color: #000;
-        }
+       .cinema-frame{
+    position:relative;
+    width:100%;
+    padding-bottom:56.25%;
+    overflow:hidden;
+    border-radius:14px;
+    transition:.5s;
+    background:#000;
+}
+
+/* Mode portrait */
+.cinema-frame.portrait{
+    width:420px;
+    height:90vh;
+    padding-bottom:0;
+    margin:auto;
+}
+
+.cinema-frame iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+    transition:.5s;
+}
+
+/* Zoom video saat portrait */
+.cinema-frame.portrait iframe{
+    top:50%;
+    left:50%;
+    width:320%;
+    height:100%;
+    transform:translate(-50%,-50%);
+}
 
         /* Info Film yang sedang Diputar */
         .now-playing-info {
@@ -807,6 +824,14 @@ right:-20px;
             }
 
             mainPlayer.src = finalUrl;
+
+            const frame = document.querySelector(".cinema-frame");
+
+frame.classList.remove("portrait");
+
+if(this.classList.contains("portrait-video")){
+    frame.classList.add("portrait");
+}
 
             // Update informasi film
             playerTitle.textContent = title;
