@@ -110,16 +110,15 @@
             transition: box-shadow 0.5s ease;
         }
 
-       .cinema-frame{
+   .cinema-frame{
     position:relative;
     width:100%;
-    padding-bottom:56.25%;
+    height:700px;
     overflow:hidden;
-    border-radius:14px;
-    transition:.5s;
+    border-radius:18px;
     background:#000;
+    transition:.4s;
 }
-
 /* Mode portrait */
 .cinema-frame.portrait{
     width:420px;
@@ -144,6 +143,41 @@
     width:320%;
     height:100%;
     transform:translate(-50%,-50%);
+}
+
+/* PLAYER PORTRAIT */
+
+.cinema-screen-wrapper.portrait{
+
+    width:430px;
+    max-width:100%;
+    margin:auto;
+
+}
+
+.cinema-screen-wrapper.portrait .cinema-frame{
+
+    width:430px;
+    height:780px;
+
+}
+
+/* Zoom video */
+
+.cinema-screen-wrapper.portrait iframe{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    width:350%;
+    height:100%;
+
+    transform:translate(-50%,-50%);
+
+    border:none;
+
 }
 
         /* Info Film yang sedang Diputar */
@@ -825,12 +859,12 @@ right:-20px;
 
             mainPlayer.src = finalUrl;
 
-            const frame = document.querySelector(".cinema-frame");
+      const wrapper=document.querySelector(".cinema-screen-wrapper");
 
-frame.classList.remove("portrait");
+wrapper.classList.remove("portrait");
 
-if(this.classList.contains("portrait-video")){
-    frame.classList.add("portrait");
+if(this.classList.contains("potrait-video")){
+    wrapper.classList.add("portrait");
 }
 
             // Update informasi film
